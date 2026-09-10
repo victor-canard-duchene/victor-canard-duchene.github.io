@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EuroPathways: European Postgraduate Policy, Rights & Advocacy Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        navy: {
+                            800: '#0c1b2e',
+                            900: '#07101d',
+                            950: '#040911',
+                        },
+                        brand: {
+                            50: '#eef6ff',
+                            100: '#d9eaff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        },
+                        emerald: {
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                        },
+                        amber: {
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chart-box {
+            position: relative;
+            width: 100%;
+            height: 330px;
+        }
+        @media (min-width: 768px) {
+            .chart-box {
+                height: 380px;
+            }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+        }
+        .badge-pulse {
+            animation: pulse-slow 3s infinite;
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-blue-200 selection:text-blue-900">
+
+    <!-- Sticky Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-navy-950 text-white shadow-xl border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center py-3">
+            <div class="flex items-center justify-between w-full md:w-auto">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('explorer')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+                        <i class="fa-solid fa-graduation-cap text-lg"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-base font-extrabold tracking-tight text-white">EuroPathways</span>
+                            <span class="text-[10px] uppercase font-bold tracking-widest bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full border border-blue-400/30">2026/27</span>
+                        </div>
+                        <p class="text-xs text-slate-400 font-medium">European Master's, Funding & Visa Strategy Portal</p>
+                    </div>
+                </div>
+
+                <!-- Pinned items counter button for mobile -->
+                <button onclick="togglePinnedDrawer()" class="md:hidden flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 text-amber-400 text-xs font-semibold border border-slate-700">
+                    <i class="fa-solid fa-bookmark"></i>
+                    <span id="pinned-count-badge-mobile">0</span>
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex flex-wrap items-center gap-1.5 mt-3 md:mt-0 text-xs font-semibold">
+                <button onclick="switchTab('explorer')" id="nav-explorer" class="nav-btn px-3 py-2 rounded-lg transition-all bg-blue-600 text-white shadow-sm flex items-center gap-1.5">
+                    <i class="fa-solid fa-compass"></i> <span>Programs (16)</span>
+                </button>
+                <button onclick="switchTab('analytics')" id="nav-analytics" class="nav-btn px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 flex items-center gap-1.5">
+                    <i class="fa-solid fa-chart-simple"></i> <span>Analytics</span>
+                </button>
+                <button onclick="switchTab('matcher')" id="nav-matcher" class="nav-btn px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 flex items-center gap-1.5">
+                    <i class="fa-solid fa-bullseye"></i> <span>Profile Matcher</span>
+                </button>
+                <button onclick="switchTab('scholarships')" id="nav-scholarships" class="nav-btn px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 flex items-center gap-1.5">
+                    <i class="fa-solid fa-hand-holding-dollar"></i> <span>Scholarships (18)</span>
+                </button>
+                <button onclick="switchTab('visas')" id="nav-visas" class="nav-btn px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 flex items-center gap-1.5">
+                    <i class="fa-solid fa-passport"></i> <span>Visas & Work</span>
+                </button>
+                <button onclick="switchTab('roadmap')" id="nav-roadmap" class="nav-btn px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 flex items-center gap-1.5">
+                    <i class="fa-solid fa-timeline"></i> <span>Roadmap</span>
+                </button>
+
+                <!-- Pinned drawer desktop trigger -->
+                <button onclick="togglePinnedDrawer()" class="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 ml-2 transition">
+                    <i class="fa-solid fa-bookmark"></i>
+                    <span>Saved</span>
+                    <span id="pinned-count-badge-desktop" class="bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded text-[10px] font-bold">0</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- Context Hero Banner -->
+        <section class="relative overflow-hidden bg-gradient-to-br from-navy-900 via-navy-800 to-slate-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl border border-slate-700/80">
+            <div class="absolute -right-10 -bottom-10 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-10 -top-10 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="relative z-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+                <div class="space-y-3 max-w-3xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold">
+                        <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                        Strategic Master's Navigation: Policy, Human Rights, Armed Conflict & Advocacy
+                    </div>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight text-white">
+                        Curated European Postgraduate Pathways
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Explore <strong class="text-white">16 premier master's degrees</strong> across <strong class="text-white">12 European destinations</strong> (Austria, Belgium, Czech Republic, France, Germany, Ireland, Italy, Netherlands, Poland, Spain, Switzerland, and the UK). Optimized for candidates with quantitative/logic foundations, conflict coursework, civil society field experience, and English/French proficiency.
+                    </p>
+                </div>
+
+                <!-- Quick Key Metrics -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-3 w-full lg:w-auto shrink-0 font-mono text-center">
+                    <div class="p-3.5 bg-slate-800/80 rounded-xl border border-slate-700/80 backdrop-blur-sm">
+                        <div class="text-2xl font-bold text-white">16</div>
+                        <div class="text-[11px] font-sans text-slate-400">Target Programs</div>
+                    </div>
+                    <div class="p-3.5 bg-slate-800/80 rounded-xl border border-slate-700/80 backdrop-blur-sm">
+                        <div class="text-2xl font-bold text-emerald-400">18</div>
+                        <div class="text-[11px] font-sans text-slate-400">Funding Sources</div>
+                    </div>
+                    <div class="p-3.5 bg-slate-800/80 rounded-xl border border-slate-700/80 backdrop-blur-sm">
+                        <div class="text-2xl font-bold text-amber-400">12</div>
+                        <div class="text-[11px] font-sans text-slate-400">Host Countries</div>
+                    </div>
+                    <div class="p-3.5 bg-slate-800/80 rounded-xl border border-slate-700/80 backdrop-blur-sm">
+                        <div class="text-2xl font-bold text-blue-400">100%</div>
+                        <div class="text-[11px] font-sans text-slate-400">English Instruction</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Jump Strip -->
+            <div class="relative z-10 mt-6 pt-5 border-t border-slate-700/60 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-300">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-slate-400 font-semibold"><i class="fa-solid fa-sparkles text-amber-400 mr-1"></i>High-Leverage Highlights:</span>
+                    <span class="bg-slate-800/90 px-2.5 py-1 rounded-md border border-slate-700">🇨🇿 Czech Rep: Free Labor Market Access</span>
+                    <span class="bg-slate-800/90 px-2.5 py-1 rounded-md border border-slate-700">🇮🇪 Ireland: 24-Mo Stamp 1G Stay</span>
+                    <span class="bg-slate-800/90 px-2.5 py-1 rounded-md border border-slate-700">🇮🇹 Bologna: €150–€3k Income-Scaled Fee</span>
+                    <span class="bg-slate-800/90 px-2.5 py-1 rounded-md border border-slate-700">🇪🇸 Spain: 30 Hr/Wk Work Rights</span>
+                </div>
+                <button onclick="switchTab('matcher')" class="text-blue-400 hover:text-blue-300 font-bold inline-flex items-center gap-1 transition">
+                    Calculate Your Profile Match →
+                </button>
+            </div>
+        </section>
+
+        <!-- TAB 1: PROGRAM EXPLORER -->
+        <section id="sec-explorer" class="tab-content space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6">
+                
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-navy-900 tracking-tight flex items-center gap-2">
+                            <span>Program Directory & Admissions Hub</span>
+                            <span id="filtered-total-pill" class="text-xs bg-blue-100 text-blue-800 font-mono px-2 py-0.5 rounded-full font-bold">16 Available</span>
+                        </h3>
+                        <p class="text-slate-500 text-xs sm:text-sm mt-0.5">
+                            Filter by country, degree length (1-yr accelerated priority vs. 2-yr backup), tuition budget, or language.
+                        </p>
+                    </div>
+
+                    <!-- Comparison Action Bar -->
+                    <div class="flex items-center gap-2">
+                        <button onclick="openCompareModal()" id="btn-compare" class="hidden px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow transition flex items-center gap-2">
+                            <i class="fa-solid fa-code-compare"></i>
+                            <span>Compare Selected (<span id="compare-count">0</span>)</span>
+                        </button>
+                        <button onclick="resetProgramFilters()" class="text-xs text-slate-500 hover:text-blue-600 font-semibold px-2 py-1 transition flex items-center gap-1">
+                            <i class="fa-solid fa-rotate-left text-[10px]"></i> Reset Filters
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Comprehensive Filter Matrix -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 p-4 bg-slate-50/80 rounded-xl border border-slate-200 mb-6 text-xs">
+                    <!-- Search Input -->
+                    <div class="space-y-1">
+                        <label class="block font-bold text-slate-700">Search Keywords</label>
+                        <div class="relative">
+                            <input type="text" id="filter-search" oninput="applyProgramFilters()" placeholder="School, degree, focus..." class="w-full pl-8 pr-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                            <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
+                        </div>
+                    </div>
+
+                    <!-- Destination Country -->
+                    <div class="space-y-1">
+                        <label class="block font-bold text-slate-700">Host Country</label>
+                        <select id="filter-country" onchange="applyProgramFilters()" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                            <option value="all">All 12 Countries</option>
+                            <option value="Austria">Austria (Vienna)</option>
+                            <option value="Belgium">Belgium (Leuven / Brussels)</option>
+                            <option value="Czech Republic">Czech Republic (Prague)</option>
+                            <option value="France">France (Paris)</option>
+                            <option value="Germany">Germany (Berlin)</option>
+                            <option value="Ireland">Ireland (Dublin)</option>
+                            <option value="Italy">Italy (Bologna)</option>
+                            <option value="Netherlands">Netherlands (Utrecht / Maastricht)</option>
+                            <option value="Poland">Poland (Natolin / Warsaw)</option>
+                            <option value="Spain">Spain (Barcelona)</option>
+                            <option value="Switzerland">Switzerland (Geneva)</option>
+                            <option value="United Kingdom">United Kingdom (London)</option>
+                        </select>
+                    </div>
+
+                    <!-- Duration Filter -->
+                    <div class="space-y-1">
+                        <label class="block font-bold text-slate-700">Program Duration</label>
+                        <select id="filter-duration" onchange="applyProgramFilters()" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                            <option value="all">All Durations (1 & 2 Years)</option>
+                            <option value="1">1-Year Accelerated Priority (60–90 ECTS)</option>
+                            <option value="2">2-Year Comprehensive Backups (120 ECTS)</option>
+                        </select>
+                    </div>
+
+                    <!-- Max Tuition -->
+                    <div class="space-y-1">
+                        <label class="block font-bold text-slate-700">Annual Tuition (€ Max)</label>
+                        <select id="filter-tuition" onchange="applyProgramFilters()" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                            <option value="999999">Any Tuition Fee</option>
+                            <option value="6000">Under €6,000 / yr (Ultra Low)</option>
+                            <option value="15000">Under €15,000 / yr (Moderate)</option>
+                            <option value="23000">Under €23,000 / yr</option>
+                            <option value="35000">Under €35,000 / yr</option>
+                        </select>
+                    </div>
+
+                    <!-- Focus & Disciplinary Area -->
+                    <div class="space-y-1">
+                        <label class="block font-bold text-slate-700">Specialization Focus</label>
+                        <select id="filter-focus" onchange="applyProgramFilters()" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                            <option value="all">All Specializations</option>
+                            <option value="policy">Public Policy & Governance</option>
+                            <option value="conflict">Conflict & Political Violence</option>
+                            <option value="rights">Human Rights & Law</option>
+                            <option value="europe">European & Global Affairs</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Sorting Bar -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs text-slate-500 pb-4 mb-4 border-b border-slate-100 gap-2">
+                    <div>
+                        Showing <strong id="visible-count" class="text-navy-900 font-mono">16</strong> master's programs matching current filters
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-semibold text-slate-600">Sort by:</span>
+                        <select id="sort-order" onchange="applyProgramFilters()" class="px-2 py-1 rounded border border-slate-300 text-xs bg-white text-slate-700 focus:outline-none">
+                            <option value="tuition-asc">Tuition: Low to High</option>
+                            <option value="tuition-desc">Tuition: High to Low</option>
+                            <option value="duration-asc">Duration: 1-Year First</option>
+                            <option value="name">University Name (A-Z)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Cards Grid -->
+                <div id="programs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Javascript injected cards -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: COMPARATIVE ANALYTICS -->
+        <section id="sec-analytics" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6">
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold text-navy-900 tracking-tight flex items-center gap-2">
+                        <span>Macro Financial & Immigration Analytics</span>
+                        <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Comparative View</span>
+                    </h3>
+                    <p class="text-slate-500 text-xs sm:text-sm mt-1">
+                        Evaluate the economic cost of degrees against post-study immigration leverage, term-time employment limits, and salary hurdles for non-EU/EEA applicants.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                    <!-- Chart 1: Tuition Comparison -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="font-bold text-navy-900 text-sm">Annual Non-EU Tuition Benchmarking (€)</h4>
+                                <p class="text-[11px] text-slate-500">Converted to standard Euros. Highlighted across all 12 destinations.</p>
+                            </div>
+                            <span class="text-xs font-mono font-bold bg-blue-100 text-blue-800 px-2 py-0.5 rounded">Tuition Index</span>
+                        </div>
+                        <div class="chart-box">
+                            <canvas id="tuitionChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 2: Visa Stayback vs Term Work -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="font-bold text-navy-900 text-sm">Post-Graduation Stay-Back vs. Term Work Limits</h4>
+                                <p class="text-[11px] text-slate-500">Months of job-seeking visa granted vs. weekly permitted student work hours.</p>
+                            </div>
+                            <span class="text-xs font-mono font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">Immigration ROI</span>
+                        </div>
+                        <div class="chart-box">
+                            <canvas id="visaChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strategic Takeaway Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs leading-relaxed">
+                    <div class="p-4 bg-blue-50/80 border border-blue-200 rounded-xl space-y-1.5">
+                        <div class="flex items-center gap-2 font-bold text-blue-900 text-sm">
+                            <i class="fa-solid fa-coins text-blue-600"></i>
+                            <span>Lowest Cost-to-Degree</span>
+                        </div>
+                        <p class="text-slate-700">
+                            <strong>Bologna (€150–€3k)</strong> and <strong>KU Leuven (€2.5k–€5.6k)</strong> deliver the lowest financial barrier in Western/Southern Europe, with Italy offering need-based regional DSU funding.
+                        </p>
+                    </div>
+
+                    <div class="p-4 bg-emerald-50/80 border border-emerald-200 rounded-xl space-y-1.5">
+                        <div class="flex items-center gap-2 font-bold text-emerald-900 text-sm">
+                            <i class="fa-solid fa-briefcase text-emerald-600"></i>
+                            <span>Longest Post-Study Run</span>
+                        </div>
+                        <p class="text-slate-700">
+                            <strong>Ireland (Stamp 1G)</strong> and <strong>UK (Graduate Route)</strong> offer <strong>24 months</strong> of unsponsored work, with Ireland keeping full Eurozone access and lower salary floor transitions.
+                        </p>
+                    </div>
+
+                    <div class="p-4 bg-amber-50/80 border border-amber-200 rounded-xl space-y-1.5">
+                        <div class="flex items-center gap-2 font-bold text-amber-900 text-sm">
+                            <i class="fa-solid fa-scale-balanced text-amber-600"></i>
+                            <span>Free Work Market</span>
+                        </div>
+                        <p class="text-slate-700">
+                            The <strong>Czech Republic</strong> grants international students & graduates <strong>unrestricted free labor market access</strong> without requiring employer-sponsored work permits.
+                        </p>
+                    </div>
+
+                    <div class="p-4 bg-purple-50/80 border border-purple-200 rounded-xl space-y-1.5">
+                        <div class="flex items-center gap-2 font-bold text-purple-900 text-sm">
+                            <i class="fa-solid fa-landmark-flag text-purple-600"></i>
+                            <span>Multilateral Proximity</span>
+                        </div>
+                        <p class="text-slate-700">
+                            <strong>KU Leuven (Brussels)</strong> and <strong>IHEID Geneva</strong> maximize direct access to EU bodies, NATO, and Geneva UN agencies (UNOHCHR, UNHCR, ICRC) for bilingual candidates.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: PROFILE MATCHER & ACADEMIC ALIGNMENT -->
+        <section id="sec-matcher" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6">
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold text-navy-900 tracking-tight flex items-center gap-2">
+                        <span>Interactive Academic Profile & Competency Matcher</span>
+                        <span class="text-xs bg-purple-100 text-purple-800 font-bold px-2 py-0.5 rounded-full">Scoring Engine</span>
+                    </h3>
+                    <p class="text-slate-500 text-xs sm:text-sm mt-1">
+                        Select your academic and experiential strengths below. The engine calculates your admissions fit score across all 16 programs based on their official prerequisites and scoring rubrics.
+                    </p>
+                </div>
+
+                <!-- Competency Checkbox Controls -->
+                <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 mb-6">
+                    <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">Your Profile Competencies:</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+                        <label class="flex items-start gap-2.5 p-3 bg-white rounded-lg border border-slate-200 hover:border-blue-400 cursor-pointer transition">
+                            <input type="checkbox" id="chk-logic" checked onchange="updateProfileScores()" class="mt-0.5 rounded text-blue-600 focus:ring-blue-500">
+                            <div>
+                                <strong class="text-navy-900 block font-semibold">Formal Logic & Proofs</strong>
+                                <span class="text-slate-500 text-[11px]">Symbolic logic, deductive reasoning, analytical philosophy</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-2.5 p-3 bg-white rounded-lg border border-slate-200 hover:border-blue-400 cursor-pointer transition">
+                            <input type="checkbox" id="chk-stats" checked onchange="updateProfileScores()" class="mt-0.5 rounded text-blue-600 focus:ring-blue-500">
+                            <div>
+                                <strong class="text-navy-900 block font-semibold">Introductory Statistics & Regression</strong>
+                                <span class="text-slate-500 text-[11px]">Bivariate/multivariate regression, hypothesis testing, causal inference</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-2.5 p-3 bg-white rounded-lg border border-slate-200 hover:border-blue-400 cursor-pointer transition">
+                            <input type="checkbox" id="chk-conflict" checked onchange="updateProfileScores()" class="mt-0.5 rounded text-blue-600 focus:ring-blue-500">
+                            <div>
+                                <strong class="text-navy-900 block font-semibold">Political Violence Coursework</strong>
+                                <span class="text-slate-500 text-[11px]">Civil conflict, ethnic mobilization, authoritarian regimes, state repression</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-2.5 p-3 bg-white rounded-lg border border-slate-200 hover:border-blue-400 cursor-pointer transition">
+                            <input type="checkbox" id="chk-ngo" checked onchange="updateProfileScores()" class="mt-0.5 rounded text-blue-600 focus:ring-blue-500">
+                            <div>
+                                <strong class="text-navy-900 block font-semibold">Applied NGO Fieldwork / Research</strong>
+                                <span class="text-slate-500 text-[11px]">Human rights documentation, grant reporting, advocacy campaign strategy</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-2.5 p-3 bg-white rounded-lg border border-slate-200 hover:border-blue-400 cursor-pointer transition">
+                            <input type="checkbox" id="chk-french" checked onchange="updateProfileScores()" class="mt-0.5 rounded text-blue-600 focus:ring-blue-500">
+                            <div>
+                                <strong class="text-navy-900 block font-semibold">French Language (B2/C1)</strong>
+                                <span class="text-slate-500 text-[11px]">Bilingual coursework, French administrative navigation, Geneva/Brussels NGOs</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-2.5 p-3 bg-white rounded-lg border border-slate-200 hover:border-blue-400 cursor-pointer transition">
+                            <input type="checkbox" id="chk-english" checked onchange="updateProfileScores()" class="mt-0.5 rounded text-blue-600 focus:ring-blue-500">
+                            <div>
+                                <strong class="text-navy-900 block font-semibold">Fluent / Near-Native English</strong>
+                                <span class="text-slate-500 text-[11px]">IELTS 7.5+ or TOEFL 100+ equivalent reading & academic writing</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Match Results Grid -->
+                <div class="space-y-4">
+                    <h4 class="text-sm font-bold text-navy-900">Ranked Alignment Results (Dynamic Scoring):</h4>
+                    <div id="matcher-results" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Javascript calculated program matches -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: SCHOLARSHIPS DATABASE -->
+        <section id="sec-scholarships" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-navy-900 tracking-tight flex items-center gap-2">
+                            <span>Postgraduate Funding Architecture & Scholarships</span>
+                            <span class="text-xs bg-emerald-100 text-emerald-800 font-bold font-mono px-2 py-0.5 rounded-full">18 Grants</span>
+                        </h3>
+                        <p class="text-slate-500 text-xs sm:text-sm mt-0.5">
+                            Filter grants across university institutional aid, national government schemes, and diaspora heritage foundations.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Scholarship Filters -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200 mb-6 text-xs">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Applicant Target Background</label>
+                        <select id="schol-filter-citizen" onchange="applyScholarshipFilters()" class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white">
+                            <option value="all">All Eligible Backgrounds</option>
+                            <option value="global">Global / Any Non-EU Citizen</option>
+                            <option value="armenia">Armenian Citizen / Armenian Heritage</option>
+                            <option value="russia">Russian / Post-Soviet States</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Coverage Scope</label>
+                        <select id="schol-filter-coverage" onchange="applyScholarshipFilters()" class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white">
+                            <option value="all">All Coverage Levels</option>
+                            <option value="full">Full Tuition + Living Stipend</option>
+                            <option value="partial">Tuition Remission / Fee Waiver</option>
+                            <option value="grant">Fixed Cash Grant</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Search Sponsoring Entity</label>
+                        <input type="text" id="schol-filter-search" oninput="applyScholarshipFilters()" placeholder="e.g. Chevening, DAAD, Gulbenkian..." class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white">
+                    </div>
+                </div>
+
+                <!-- Scholarships Grid -->
+                <div id="scholarships-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Javascript injected cards -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: VISA MECHANICS & CONSULAR PROCEDURES -->
+        <section id="sec-visas" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6">
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold text-navy-900 tracking-tight flex items-center gap-2">
+                        <span>Student Visa Mechanics & Consular Procedures</span>
+                        <span class="text-xs bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full">Los Angeles vs. Russia</span>
+                    </h3>
+                    <p class="text-slate-500 text-xs sm:text-sm mt-1">
+                        Detailed consular protocols comparing processing from Southern California (Los Angeles jurisdiction) versus the Russian Federation (Moscow/St. Petersburg), addressing SWIFT sanctions, bank statement compliance, and apostille requirements.
+                    </p>
+                </div>
+
+                <!-- Dual Consular Panels -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <!-- Los Angeles Panel -->
+                    <div class="p-5 bg-slate-50 border border-slate-200 rounded-xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                            <h4 class="font-bold text-navy-900 text-base flex items-center gap-2">
+                                <span class="text-lg">🇺🇸</span> Los Angeles Consular Jurisdiction
+                            </h4>
+                            <span class="px-2.5 py-0.5 bg-blue-100 text-blue-800 font-mono text-xs font-bold rounded">3–6 Wks Processing</span>
+                        </div>
+                        <ul class="text-xs text-slate-700 space-y-2.5 leading-relaxed">
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-location-dot text-blue-600 mt-0.5 shrink-0"></i>
+                                <span><strong>Consular Hubs:</strong> Austrian Consulate (Wilshire Blvd), Spanish Consulate (Wilshire/BLS), French/Dutch Consulates (VFS Century City & Beverly Hills), German Consulate (Wilshire Blvd), Italian Consulate (Brentwood), Czech Consulate (Wilshire Blvd).</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-stamp text-blue-600 mt-0.5 shrink-0"></i>
+                                <span><strong>Document Authentication:</strong> California Secretary of State Apostille for state certificates; US Department of State for FBI background checks.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-file-invoice-dollar text-blue-600 mt-0.5 shrink-0"></i>
+                                <span><strong>Financial Verification:</strong> Standard US bank statements showing required monthly maintenance (€615 to €1,250/mo) without international sanctions friction.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-circle-check text-blue-600 mt-0.5 shrink-0"></i>
+                                <span><strong>Process Efficiency:</strong> Predictable appointment scheduling via VFS/BLS or direct consular portals; standard biometrics.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Russia Panel -->
+                    <div class="p-5 bg-amber-50/60 border border-amber-200 rounded-xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-amber-200 pb-3">
+                            <h4 class="font-bold text-navy-900 text-base flex items-center gap-2">
+                                <span class="text-lg">🇷🇺</span> Russian Federation Jurisdiction
+                            </h4>
+                            <span class="px-2.5 py-0.5 bg-amber-200 text-amber-900 font-mono text-xs font-bold rounded">4–10 Wks Processing</span>
+                        </div>
+                        <ul class="text-xs text-slate-700 space-y-2.5 leading-relaxed">
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-triangle-exclamation text-amber-600 mt-0.5 shrink-0"></i>
+                                <span><strong>SWIFT & Bank Sanctions:</strong> Statements from Sberbank, VTB, Tinkoff, Alfa rejected. Solvency must be proven via unsanctioned banks, third-country accounts (Armenia, Georgia, UAE), or host guarantees.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-building-columns text-amber-600 mt-0.5 shrink-0"></i>
+                                <span><strong>Institutional Guarantees:</strong> German <em>Verpflichtungserklärung</em>, Belgian <em>Annex 32</em>, French <em>Attestation de prise en charge</em>, or university escrow deposit (Netherlands/Belgium).</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-passport text-amber-600 mt-0.5 shrink-0"></i>
+                                <span><strong>Pre-Consular Platforms:</strong> Mandatory <em>Campus France EEF</em> for French visas, <em>Universitaly</em> platform pre-enrolment for Italy, and Czech educational diploma recognition (*nostrifikace*).</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-credit-card text-amber-600 mt-0.5 shrink-0"></i>
+                                <span><strong>Payment Workarounds:</strong> Consular fees, international health insurance, and appointment slots require foreign-issued bank cards.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Comprehensive Immigration & Post-Study Work Matrix -->
+                <div class="space-y-4">
+                    <h4 class="text-sm font-bold text-navy-900">Destination Immigration Frameworks & Post-Study Stay-Back Rights:</h4>
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                        <table class="w-full text-xs text-left text-slate-700">
+                            <thead class="bg-navy-950 text-white font-semibold">
+                                <tr>
+                                    <th class="p-3">Country</th>
+                                    <th class="p-3">In-Term Work Rights</th>
+                                    <th class="p-3">Solvency Proof</th>
+                                    <th class="p-3">Post-Study Permit</th>
+                                    <th class="p-3">Stay Duration</th>
+                                    <th class="p-3">Transition to Settlement</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 bg-white">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 font-bold text-navy-900">🇨🇿 Czech Rep.</td>
+                                    <td class="p-3 text-emerald-700 font-bold">Free Labor Market Access</td>
+                                    <td class="p-3">~CZK 115,810 (~€4,700/yr)</td>
+                                    <td class="p-3">Job-Seeking Permit / Employee Card</td>
+                                    <td class="p-3 font-mono font-bold">9 Months</td>
+                                    <td class="p-3">Retains free labor market access permanently. No employer sponsorship test.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 font-bold text-navy-900">🇮🇪 Ireland</td>
+                                    <td class="p-3">20 hrs/wk (40 in holiday)</td>
+                                    <td class="p-3">€10,000 / year liquid</td>
+                                    <td class="p-3 font-bold text-blue-700">Third Level Graduate (Stamp 1G)</td>
+                                    <td class="p-3 font-mono font-bold text-emerald-700">24 Months</td>
+                                    <td class="p-3">Converts to Critical Skills or General Work Permit upon contract offer.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 font-bold text-navy-900">🇪🇸 Spain</td>
+                                    <td class="p-3 text-emerald-700 font-bold">30 hrs/wk (No permit needed)</td>
+                                    <td class="p-3">100% IPREM (~€600/mo)</td>
+                                    <td class="p-3">Residencia Búsqueda de Empleo</td>
+                                    <td class="p-3 font-mono font-bold">12 Months</td>
+                                    <td class="p-3">Transitions into <em>Cuenta Ajena</em> or Highly Qualified Professional status.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 font-bold text-navy-900">🇧🇪 Belgium</td>
+                                    <td class="p-3">20 hrs/week</td>
+                                    <td class="p-3">~€803/mo (Blocked / Annex 32)</td>
+                                    <td class="p-3">Search Year (Zoekjaar)</td>
+                                    <td class="p-3 font-mono font-bold">12 Months</td>
+                                    <td class="p-3">Converts to Single Permit (<em>Permis Unique</em>) without standard labor shortage testing.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 font-bold text-navy-900">🇩🇪 Germany</td>
+                                    <td class="p-3">140 full / 280 half days/yr</td>
+                                    <td class="p-3">€992/mo (€11,904 blocked)</td>
+                                    <td class="p-3">§ 20 Abs. 3 Jobseeker Permit</td>
+                                    <td class="p-3 font-mono font-bold text-emerald-700">18 Months</td>
+                                    <td class="p-3">Converts to EU Blue Card; permanent settlement in 21 months with B1 German.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 font-bold text-navy-900">🇳🇱 Netherlands</td>
+                                    <td class="p-3">Max 16 hrs/wk (requires TWV)</td>
+                                    <td class="p-3">~€1,050–€1,250/mo</td>
+                                    <td class="p-3">Zoekjaar (Orientation Year)</td>
+                                    <td class="p-3 font-mono font-bold">12 Months</td>
+                                    <td class="p-3">Permanent lower Highly Skilled Migrant salary floor (€3,122/mo). Can trigger in 3 yrs.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 font-bold text-navy-900">🇫🇷 France</td>
+                                    <td class="p-3">964 hrs/yr (~20 hrs/wk)</td>
+                                    <td class="p-3">€615 / month</td>
+                                    <td class="p-3">Carte de Séjour RECE</td>
+                                    <td class="p-3 font-mono font-bold">12 Months</td>
+                                    <td class="p-3">Switch to <em>Salarié</em> visa if job relates to degree and pays &ge; 1.5x SMIC (~€2,734/mo).</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 font-bold text-navy-900">🇦🇹 Austria</td>
+                                    <td class="p-3">20 hrs/wk (AMS permit)</td>
+                                    <td class="p-3">€1,110 / month (aged 24+)</td>
+                                    <td class="p-3">Red-White-Red Card for Graduates</td>
+                                    <td class="p-3 font-mono font-bold">12 Months</td>
+                                    <td class="p-3">Exempt from AMS labor market shortage testing if salary meets statutory baseline.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 font-bold text-navy-900">🇮🇹 Italy</td>
+                                    <td class="p-3">20 hrs/wk (1,040 hrs/yr)</td>
+                                    <td class="p-3">~€6,000 / year</td>
+                                    <td class="p-3">Permesso Ricerca Lavoro</td>
+                                    <td class="p-3 font-mono font-bold">12 Months</td>
+                                    <td class="p-3">Converts to <em>Lavoro Subordinato</em> exempt from annual <em>Decreto Flussi</em> quotas.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 font-bold text-navy-900">🇬🇧 United Kingdom</td>
+                                    <td class="p-3">20 hrs/wk in term</td>
+                                    <td class="p-3">£1,529/mo (London) 28 days</td>
+                                    <td class="p-3">Graduate Route Visa</td>
+                                    <td class="p-3 font-mono font-bold text-emerald-700">24 Months</td>
+                                    <td class="p-3">Non-renewable. Switching to Skilled Worker requires meeting steep £38,700/yr threshold.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: ROADMAP & STRATEGY TIMELINE -->
+        <section id="sec-roadmap" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-navy-900 tracking-tight flex items-center gap-2">
+                            <span>15-Month Operational Strategy Roadmap</span>
+                            <span class="text-xs bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full">Interactive Checklist</span>
+                        </h3>
+                        <p class="text-slate-500 text-xs sm:text-sm mt-0.5">
+                            Coordinate standardized tests, institutional financial aid, external fellowships, and consular filings. Check off items to track progress.
+                        </p>
+                    </div>
+
+                    <!-- Progress Indicator -->
+                    <div class="w-full sm:w-48 bg-slate-100 rounded-xl p-2 border border-slate-200 text-right">
+                        <div class="text-[11px] font-bold text-slate-600 mb-1 flex justify-between">
+                            <span>Readiness Progress:</span>
+                            <span id="roadmap-progress-text" class="text-blue-600 font-mono">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                            <div id="roadmap-progress-bar" class="bg-blue-600 h-full w-0 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase Navigation Tabs -->
+                <div class="flex border-b border-slate-200 text-xs sm:text-sm font-semibold mb-6 overflow-x-auto gap-2">
+                    <button onclick="switchPhase('p1')" id="p-tab-p1" class="phase-btn px-4 py-2.5 border-b-2 border-blue-600 text-blue-600 flex items-center gap-2">
+                        <span>Phase 1</span>
+                        <span class="text-[11px] font-normal text-slate-500">(Aug – Oct)</span>
+                    </button>
+                    <button onclick="switchPhase('p2')" id="p-tab-p2" class="phase-btn px-4 py-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2">
+                        <span>Phase 2</span>
+                        <span class="text-[11px] font-normal text-slate-500">(Nov – Feb)</span>
+                    </button>
+                    <button onclick="switchPhase('p3')" id="p-tab-p3" class="phase-btn px-4 py-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2">
+                        <span>Phase 3</span>
+                        <span class="text-[11px] font-normal text-slate-500">(Mar – May)</span>
+                    </button>
+                    <button onclick="switchPhase('p4')" id="p-tab-p4" class="phase-btn px-4 py-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2">
+                        <span>Phase 4</span>
+                        <span class="text-[11px] font-normal text-slate-500">(Jun – Aug)</span>
+                    </button>
+                </div>
+
+                <!-- Active Phase Checklist Container -->
+                <div id="phase-container" class="space-y-4">
+                    <!-- Dynamic JavaScript checklist insertion -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Program Details Modal -->
+    <div id="program-modal" class="fixed inset-0 bg-navy-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-slate-200 relative custom-scrollbar">
+            <button onclick="closeModal('program-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">&times;</button>
+            <div id="modal-content">
+                <!-- Javascript inserted details -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Side Comparison Drawer / Modal -->
+    <div id="compare-modal" class="fixed inset-0 bg-navy-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-slate-200 relative custom-scrollbar">
+            <button onclick="closeModal('compare-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">&times;</button>
+            <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-3">
+                <i class="fa-solid fa-code-compare text-blue-600 text-lg"></i>
+                <h3 class="text-lg font-bold text-navy-900">Side-by-Side Program Comparison</h3>
+            </div>
+            <div id="compare-modal-content" class="overflow-x-auto">
+                <!-- Javascript injected side-by-side comparison -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Pinned Items Drawer -->
+    <div id="pinned-drawer" class="fixed inset-y-0 right-0 max-w-md w-full bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 border-l border-slate-200 flex flex-col">
+        <div class="p-4 bg-navy-950 text-white flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-bookmark text-amber-400"></i>
+                <h4 class="font-bold text-sm">Saved Programs & Grants</h4>
+            </div>
+            <button onclick="togglePinnedDrawer()" class="text-slate-300 hover:text-white text-lg">&times;</button>
+        </div>
+        <div id="pinned-items-list" class="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar text-xs">
+            <!-- Javascript pinned items -->
+        </div>
+        <div class="p-4 border-t border-slate-200 bg-slate-50 flex justify-between items-center text-xs">
+            <button onclick="clearAllPinned()" class="text-slate-500 hover:text-rose-600 font-semibold">Clear All</button>
+            <button onclick="togglePinnedDrawer()" class="px-4 py-2 bg-navy-900 text-white rounded-lg font-bold">Done</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-navy-950 text-slate-400 text-xs py-10 border-t border-slate-800/80 mt-16">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-3">
+            <div class="flex justify-center items-center gap-2 text-white font-bold text-sm">
+                <i class="fa-solid fa-graduation-cap text-blue-400"></i>
+                <span>EuroPathways Advisory Intelligence</span>
+            </div>
+            <p class="max-w-2xl mx-auto text-slate-400">
+                A strategic decision matrix for postgraduate study in public policy, armed conflict analysis, human rights, and advocacy. Built with verified data from university faculties, consular directives, and statutory post-study immigration frameworks.
+            </p>
+            <div class="flex justify-center flex-wrap gap-4 text-slate-500 pt-2 text-[11px]">
+                <span>• Austria</span><span>• Belgium</span><span>• Czech Republic</span><span>• France</span><span>• Germany</span><span>• Ireland</span><span>• Italy</span><span>• Netherlands</span><span>• Poland</span><span>• Spain</span><span>• Switzerland</span><span>• United Kingdom</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const programs = [
+            {
+                id: 'ceu-pol',
+                name: 'MA in Politics (1-Year)',
+                school: 'Central European University',
+                location: 'Vienna, Austria',
+                country: 'Austria',
+                duration: 1,
+                ects: '60 ECTS / 30 US',
+                tuition: 12000,
+                tuitionFormatted: '€12,000',
+                deadlines: 'R1: Oct 15 / R2: Feb 2 (Aid Priority) / R3: Apr 15',
+                focusArea: 'policy',
+                focus: 'Comparative Politics, Political Economy, Institutional Design, Quantitative Methods',
+                link: 'https://www.ceu.edu/academics/degrees/ma-politics-1-year',
+                highlights: 'Dual Austrian & US accreditation. Generous departmental financial aid up to full ride.',
+                language: 'English',
+                strengths: ['logic', 'stats', 'conflict']
+            },
+            {
+                id: 'ceu-mpp',
+                name: 'MA in Public Policy (1-Year)',
+                school: 'Central European University',
+                location: 'Vienna, Austria',
+                country: 'Austria',
+                duration: 1,
+                ects: '60 ECTS / 30 US',
+                tuition: 12000,
+                tuitionFormatted: '€12,000',
+                deadlines: 'R1: Oct 15 / R2: Feb 2 (Aid Priority) / R3: Apr 15',
+                focusArea: 'policy',
+                focus: 'Applied Governance, Policy Lab, Strategic Civil Advocacy',
+                link: 'https://www.ceu.edu/academics/degrees/ma-public-policy',
+                highlights: 'Mandatory Policy Lab partnering directly with external NGOs and intergovernmental bodies.',
+                language: 'English',
+                strengths: ['logic', 'ngo', 'stats']
+            },
+            {
+                id: 'ceu-hr',
+                name: 'MA in Human Rights (1-Year)',
+                school: 'Central European University',
+                location: 'Vienna, Austria',
+                country: 'Austria',
+                duration: 1,
+                ects: '60 ECTS / 30 US',
+                tuition: 13000,
+                tuitionFormatted: '€13,000',
+                deadlines: 'R1: Oct 15 / R2: Feb 2 (Aid Priority) / R3: Apr 15',
+                focusArea: 'rights',
+                focus: 'International Human Rights, Civil Rights Litigation, Constitutionalism',
+                link: 'https://www.ceu.edu/academics/degrees/ma-human-rights-1-year',
+                highlights: 'Housed in Department of Legal Studies. Applied litigation research thesis or capstone.',
+                language: 'English',
+                strengths: ['logic', 'conflict', 'ngo']
+            },
+            {
+                id: 'ibei-mpp',
+                name: 'Master\'s in Public Policy (1-Year)',
+                school: 'IBEI / Universitat Pompeu Fabra',
+                location: 'Barcelona, Spain',
+                country: 'Spain',
+                duration: 1,
+                ects: '60 ECTS',
+                tuition: 12900,
+                tuitionFormatted: '€12,900 (€215/credit)',
+                deadlines: 'Rolling from Autumn; July 1 (Final non-EU) / Spring Aid rounds',
+                focusArea: 'policy',
+                focus: 'Public Policy Analysis, Economic Evaluation, Empirical Governance',
+                link: 'https://www.ibei.org/en/master-in-public-policy_249134',
+                highlights: 'Official Spanish Master (*Máster Oficial*). 30 hr/wk student work allowance during term.',
+                language: 'English',
+                strengths: ['logic', 'stats', 'ngo']
+            },
+            {
+                id: 'ibei-ir',
+                name: 'Master\'s in International Relations (1-Year)',
+                school: 'IBEI / Universitat Pompeu Fabra',
+                location: 'Barcelona, Spain',
+                country: 'Spain',
+                duration: 1,
+                ects: '60 ECTS',
+                tuition: 12900,
+                tuitionFormatted: '€12,900 (€215/credit)',
+                deadlines: 'Rolling from Autumn; July 1 (Final non-EU) / Spring Aid rounds',
+                focusArea: 'conflict',
+                focus: 'International Security, Armed Conflict, Human Rights Protection',
+                link: 'https://www.ibei.org/en/master-s-in-international-relations_874',
+                highlights: 'Mediterranean and Latin American policy nexus. 12-month post-study search permit.',
+                language: 'English',
+                strengths: ['conflict', 'logic', 'ngo']
+            },
+            {
+                id: 'kuleuven-maes',
+                name: 'Master of European Studies: MAES (1-Year)',
+                school: 'KU Leuven',
+                location: 'Leuven / Brussels, Belgium',
+                country: 'Belgium',
+                duration: 1,
+                ects: '60 ECTS',
+                tuition: 4200,
+                tuitionFormatted: '€2,533 – €5,613',
+                deadlines: 'Feb 1 (Master Mind Aid) / Mar 1 (Non-EEA Priority) / May 1 (Final)',
+                focusArea: 'europe',
+                focus: 'European Integration, Diplomacy, Peace & Security, Human Rights Advocacy',
+                link: 'https://ghum.kuleuven.be/maes',
+                highlights: '20 minutes from Brussels EU headquarters. Flemish Master Mind Scholarship (€10k stipend).',
+                language: 'English (French modules optional)',
+                strengths: ['conflict', 'french', 'ngo']
+            },
+            {
+                id: 'ucd-mpp',
+                name: 'MSc in Public Policy (1-Year)',
+                school: 'University College Dublin',
+                location: 'Dublin, Ireland',
+                country: 'Ireland',
+                duration: 1,
+                ects: '90 ECTS',
+                tuition: 22600,
+                tuitionFormatted: '€22,600',
+                deadlines: 'Rolling from Oct; Mid-March (GOI-IES Scholarship cutoff)',
+                focusArea: 'policy',
+                focus: 'Quantitative Policy Analysis, Econometric Program Evaluation, Policy Capstone',
+                link: 'https://www.ucd.ie/',
+                highlights: '24-month unsponsored Stamp 1G post-study visa. Native English-speaking Eurozone economy.',
+                language: 'English',
+                strengths: ['stats', 'logic', 'ngo']
+            },
+            {
+                id: 'utrecht-conflict',
+                name: 'MSc Conflict Studies & Human Rights (1-Year)',
+                school: 'Utrecht University',
+                location: 'Utrecht, Netherlands',
+                country: 'Netherlands',
+                duration: 1,
+                ects: '60 ECTS',
+                tuition: 21342,
+                tuitionFormatted: '€21,342',
+                deadlines: 'Feb 1 (Scholarship Priority) / Apr 1 (Non-EU Final)',
+                focusArea: 'conflict',
+                focus: 'Violent Fragmentation, Armed Mobilization, Transitional Justice',
+                link: 'https://www.uu.nl/en/masters/conflict-studies-and-human-rights',
+                highlights: 'Requires 30 ECTS prior coursework and 200-word research proposal. Dutch Zoekjaar stay.',
+                language: 'English',
+                strengths: ['conflict', 'ngo', 'logic']
+            },
+            {
+                id: 'maastricht-unu',
+                name: 'MSc Public Policy & Human Development (1-Year)',
+                school: 'Maastricht University / UNU-MERIT',
+                location: 'Maastricht, Netherlands',
+                country: 'Netherlands',
+                duration: 1,
+                ects: '60 ECTS',
+                tuition: 21500,
+                tuitionFormatted: '€21,500',
+                deadlines: 'Dec 10 (Degree app for Aid) / Feb 1 (NL High-Potential) / May 1 (Final)',
+                focusArea: 'policy',
+                focus: 'Econometric Policy Evaluation, Social Protection, Migration Studies',
+                link: 'https://unu.edu/merit/masters-degree/master-science-public-policy-and-human-development',
+                highlights: 'Joint degree with United Nations University. Strong empirical econometrics foundations.',
+                language: 'English',
+                strengths: ['stats', 'logic', 'ngo']
+            },
+            {
+                id: 'lse-hr',
+                name: 'MSc Human Rights and Politics (1-Year)',
+                school: 'London School of Economics',
+                location: 'London, United Kingdom',
+                country: 'United Kingdom',
+                duration: 1,
+                ects: '180 CATS / 4 Units',
+                tuition: 40600,
+                tuitionFormatted: '£34,700 (~€40,600)',
+                deadlines: 'Rolling from Oct; Apr 23 (Graduate Support Scheme cutoff)',
+                focusArea: 'rights',
+                focus: 'Critical Normative Theory, Institutional Sociology, Human Rights Jurisprudence',
+                link: 'https://www.lse.ac.uk/study-at-lse/graduate/msc-human-rights-and-politics',
+                highlights: 'Global top-ranked institutional brand. Mandatory 10,000-word supervised dissertation.',
+                language: 'English',
+                strengths: ['logic', 'conflict', 'ngo']
+            },
+            {
+                id: 'lse-conflict',
+                name: 'MSc Political Science: Conflict Studies (1-Year)',
+                school: 'London School of Economics',
+                location: 'London, United Kingdom',
+                country: 'United Kingdom',
+                duration: 1,
+                ects: '180 CATS / 4 Units',
+                tuition: 35500,
+                tuitionFormatted: '£30,400 (~€35,500)',
+                deadlines: 'Rolling Admissions (Opens October)',
+                focusArea: 'conflict',
+                focus: 'Civil Conflict Analysis, Fractionalization, Institutional Settlements',
+                link: 'https://www.lse.ac.uk/study-at-lse/graduate',
+                highlights: 'Methodologically intense comparative politics in LSE Department of Government.',
+                language: 'English',
+                strengths: ['stats', 'conflict', 'logic']
+            },
+            {
+                id: 'coleurope-natolin',
+                name: 'MA European Interdisciplinary Studies (1-Year)',
+                school: 'College of Europe',
+                location: 'Natolin (Warsaw), Poland',
+                country: 'Poland',
+                duration: 1,
+                ects: '66 ECTS',
+                tuition: 27000,
+                tuitionFormatted: '€27,000 (Includes Board & Housing)',
+                deadlines: 'Mid-January (Jan 14–19)',
+                focusArea: 'europe',
+                focus: 'European Neighbourhood Policy, Regional Security, Post-Soviet Transitions',
+                link: 'https://coleuropenatolin.eu/',
+                highlights: 'Bilingual (English/French). Full board residential campus. EU ENP scholarships.',
+                language: 'Bilingual (English/French)',
+                strengths: ['french', 'conflict', 'europe']
+            },
+            {
+                id: 'charles-main',
+                name: 'MA in International Relations: MAIN (2-Year)',
+                school: 'Charles University',
+                location: 'Prague, Czech Republic',
+                country: 'Czech Republic',
+                duration: 2,
+                ects: '120 ECTS',
+                tuition: 7000,
+                tuitionFormatted: '€7,000 / year',
+                deadlines: 'Feb 28 (Early-Bird) / Apr 30 (Regular Non-EU)',
+                focusArea: 'conflict',
+                focus: 'International Security, Regional Conflict, Foreign Policy Decision-Making',
+                link: 'https://study.fsv.cuni.cz/',
+                highlights: 'Permanent free access to Czech labor market without employer work permit sponsorship.',
+                language: 'English',
+                strengths: ['conflict', 'logic', 'ngo']
+            },
+            {
+                id: 'bologna-ir',
+                name: 'Master in International Relations (2-Year)',
+                school: 'University of Bologna',
+                location: 'Bologna, Italy',
+                country: 'Italy',
+                duration: 2,
+                ects: '120 ECTS',
+                tuition: 2000,
+                tuitionFormatted: '€150 – €3,000 (Income-Scaled)',
+                deadlines: 'Iterative rounds (Jan–May) via Universitaly platform',
+                focusArea: 'europe',
+                focus: 'Global Politics, Conflict Resolution, International Law, Regional Cooperation',
+                link: 'https://corsi.unibo.it/2cycle/InternationalRelations',
+                highlights: 'Public progressive tuition. Eligible for full regional DSU funding (€7,184 stipend).',
+                language: 'English',
+                strengths: ['conflict', 'logic', 'ngo']
+            },
+            {
+                id: 'scpo-sec',
+                name: 'Master in International Security (2-Year)',
+                school: 'Sciences Po (PSIA)',
+                location: 'Paris, France',
+                country: 'France',
+                duration: 2,
+                ects: '120 ECTS',
+                tuition: 20640,
+                tuitionFormatted: '€20,640 / year',
+                deadlines: 'Late Feb (Émile Boutmy Aid) / Mid-April (Final Non-EU)',
+                focusArea: 'conflict',
+                focus: 'Global Security, Diplomacy, Conflict Analysis, Humanitarian Action',
+                link: 'https://www.sciencespo.fr/psia/',
+                highlights: 'Compulsory 3rd semester dedicated to external internship or thesis in Paris/Geneva.',
+                language: 'English (French options)',
+                strengths: ['french', 'conflict', 'ngo']
+            },
+            {
+                id: 'hertie-mpp',
+                name: 'Master of Public Policy (2-Year)',
+                school: 'Hertie School',
+                location: 'Berlin, Germany',
+                country: 'Germany',
+                duration: 2,
+                ects: '120 ECTS',
+                tuition: 18750,
+                tuitionFormatted: '€18,750 / year (€37,500 total)',
+                deadlines: 'Dec 1 (Early) / Jan 15 (Priority Non-EU Aid) / May 1 (Final)',
+                focusArea: 'policy',
+                focus: 'Policy Analysis, Econometric Inference, Governance & Non-Profit Leadership',
+                link: 'https://www.hertie-school.org/en/mpp/',
+                highlights: 'Mandatory professional internship. Central & Eastern Europe Full Tuition Fellowship.',
+                language: 'English',
+                strengths: ['stats', 'logic', 'ngo']
+            }
+        ];
+
+        const scholarships = [
+            {
+                name: 'CEU Master\'s Financial Aid',
+                provider: 'Central European University',
+                citizen: 'global',
+                citizenText: 'All Admitted Master\'s Candidates (Global)',
+                coverageType: 'full',
+                coverage: 'Full/Partial Tuition Waiver + up to €1,000/mo living stipend',
+                deadline: 'February 2',
+                link: 'https://www.ceu.edu/admissions/funding-fees/scholarships',
+                destination: 'Austria'
+            },
+            {
+                name: 'IBEI Merit Tuition Waivers',
+                provider: 'IBEI Barcelona',
+                citizen: 'global',
+                citizenText: 'Admitted Candidates in Public Policy / IR',
+                coverageType: 'partial',
+                coverage: 'Partial to full tuition fee waivers (€1,500 to €12,900)',
+                deadline: 'Rolling Spring (March–May)',
+                link: 'https://www.ibei.org/en/tuition-fees_27007',
+                destination: 'Spain'
+            },
+            {
+                name: 'Master Mind Scholarship',
+                provider: 'Flemish Government (Belgium)',
+                citizen: 'global',
+                citizenText: 'Outstanding non-EEA Master\'s Candidates at KU Leuven',
+                coverageType: 'full',
+                coverage: 'Full Tuition Waiver + up to €10,000 cash living grant',
+                deadline: 'February 1 – March 1',
+                link: 'https://www.studyinflanders.be/scholarships/master-mind-scholarship',
+                destination: 'Belgium'
+            },
+            {
+                name: 'GOI-IES National Scholarship',
+                provider: 'Higher Education Authority (Ireland)',
+                citizen: 'global',
+                citizenText: 'Non-EU/EEA Candidates in MSc Public Policy (UCD)',
+                coverageType: 'full',
+                coverage: '100% Tuition Fee Waiver + €10,000 cash living stipend',
+                deadline: 'Mid-March (Annual Call)',
+                link: 'https://hea.ie/policy/internationalisation/goi-ies/',
+                destination: 'Ireland'
+            },
+            {
+                name: 'Regional DSU / ER.GO Grant',
+                provider: 'Emilia-Romagna Authority (Italy)',
+                citizen: 'global',
+                citizenText: 'Low-to-Middle Income Students at Univ. of Bologna',
+                coverageType: 'full',
+                coverage: '100% Tuition Waiver + up to €7,184/yr cash stipend + free housing/meals',
+                deadline: 'July – August (Annual Call)',
+                link: 'https://www.er-go.it/',
+                destination: 'Italy'
+            },
+            {
+                name: 'UM NL-High Potential Scholarship',
+                provider: 'Maastricht University',
+                citizen: 'global',
+                citizenText: 'Non-EU/EEA Top 15-20% High Performers',
+                coverageType: 'full',
+                coverage: '100% Tuition (€21,500) + €15,325 Living Allowance + Visa Costs',
+                deadline: 'Dec 10 (Prog) / Feb 1 (Aid)',
+                link: 'https://www.maastrichtuniversity.nl/scholarships',
+                destination: 'Netherlands'
+            },
+            {
+                name: 'UM Social Justice Scholarship',
+                provider: 'Maastricht University',
+                citizen: 'global',
+                citizenText: 'Non-EU Students in Human Rights / Public Law',
+                coverageType: 'full',
+                coverage: 'Full Tuition + 13-month living allowance + visa/insurance package',
+                deadline: 'Dec 10 (Prog) / Feb 1 (Aid)',
+                link: 'https://www.maastrichtuniversity.nl/scholarships',
+                destination: 'Netherlands'
+            },
+            {
+                name: 'UNU-MERIT MPP Scholarship',
+                provider: 'Maastricht / United Nations Univ.',
+                citizen: 'global',
+                citizenText: 'Non-EU Candidates in MSc Public Policy',
+                coverageType: 'partial',
+                coverage: 'Full Tuition (€21,500) + AON Student Health Insurance',
+                deadline: 'Mid-February (Feb 15)',
+                link: 'https://www.maastrichtuniversity.nl/scholarships',
+                destination: 'Netherlands'
+            },
+            {
+                name: 'Émile Boutmy Scholarship',
+                provider: 'Sciences Po Paris',
+                citizen: 'global',
+                citizenText: 'Top Admitted Non-EU Applicants (Merit-based)',
+                coverageType: 'partial',
+                coverage: 'Tuition grants ranging from €4,400 to €20,640 / year',
+                deadline: 'Late February (Feb 22)',
+                link: 'https://www.sciencespo.fr/admissions',
+                destination: 'France'
+            },
+            {
+                name: 'Central & Eastern Europe Award',
+                provider: 'Hertie School Berlin',
+                citizen: 'russia',
+                citizenText: 'Candidates from Central/Eastern Europe & Post-Soviet states',
+                coverageType: 'full',
+                coverage: '100% Full Tuition Waiver (€38,500 value over 2 yrs)',
+                deadline: 'January 15 (Priority)',
+                link: 'https://www.hertie-school.org/en/admissions',
+                destination: 'Germany'
+            },
+            {
+                name: 'LSE Graduate Support Scheme',
+                provider: 'London School of Economics',
+                citizen: 'global',
+                citizenText: 'All Offer Holders (Need-based Assessment)',
+                coverageType: 'partial',
+                coverage: 'Partial Fee Waivers (£5,000 to £15,000+)',
+                deadline: 'April 23 (Rolling review)',
+                link: 'https://www.lse.ac.uk/study-at-lse/graduate',
+                destination: 'United Kingdom'
+            },
+            {
+                name: 'UK Chevening Scholarship',
+                provider: 'UK FCDO',
+                citizen: 'armenia',
+                citizenText: 'Armenian Citizens with 2+ yrs leadership/work exp.',
+                coverageType: 'full',
+                coverage: 'Full Tuition (LSE included), Living Stipend (£1,347/mo), Flights, Visa',
+                deadline: 'Early October (Annual)',
+                link: 'https://www.chevening.org/apply/',
+                destination: 'United Kingdom'
+            },
+            {
+                name: 'DAAD Helmut-Schmidt (PPGG)',
+                provider: 'DAAD Germany',
+                citizen: 'armenia',
+                citizenText: 'DAC-listed developing & transition countries',
+                coverageType: 'full',
+                coverage: 'Tuition Waiver + €934/mo + Health Insurance + Travel allowances',
+                deadline: 'July 31 (Annual Call)',
+                link: 'https://www.daad.de/',
+                destination: 'Germany'
+            },
+            {
+                name: 'ENP Scholarship Scheme',
+                provider: 'College of Europe / EU Commission',
+                citizen: 'armenia',
+                citizenText: 'European Neighbourhood Countries (incl. Armenia)',
+                coverageType: 'full',
+                coverage: 'Full Tuition, Campus Accommodation, Full Board Meals, Travel',
+                deadline: 'Mid-January (Jan 14–19)',
+                link: 'https://coleuropenatolin.eu/scholarships',
+                destination: 'Poland'
+            },
+            {
+                name: 'Gulbenkian Armenian Studies Grant',
+                provider: 'Calouste Gulbenkian Foundation',
+                citizen: 'armenia',
+                citizenText: 'Master\'s/PhD students researching Armenian topics',
+                coverageType: 'grant',
+                coverage: '€7,000 fixed educational grant for European Master\'s',
+                deadline: 'May 15',
+                link: 'https://gulbenkian.pt/en/bolsas-lista/',
+                destination: 'Global / Europe'
+            },
+            {
+                name: 'Gulbenkian Higher Ed Grant',
+                provider: 'Calouste Gulbenkian Foundation',
+                citizen: 'armenia',
+                citizenText: 'Armenian heritage students in social sciences',
+                coverageType: 'grant',
+                coverage: '€4,000 fixed annual educational grant',
+                deadline: 'June 30',
+                link: 'https://gulbenkian.pt/en/bolsas-lista/',
+                destination: 'Global / Europe'
+            },
+            {
+                name: 'AGBU Global Graduate Award',
+                provider: 'AGBU Heritage Foundation',
+                citizen: 'armenia',
+                citizenText: 'Students of Armenian Descent (Global, 3.5+ GPA)',
+                coverageType: 'grant',
+                coverage: '$5,000 to $10,000 educational merit grant',
+                deadline: 'Rolling Spring / July 1',
+                link: 'https://agbu.org/scholarships',
+                destination: 'Global'
+            },
+            {
+                name: 'Boris Nemtsov Fellowships',
+                provider: 'Boris Nemtsov Foundation',
+                citizen: 'russia',
+                citizenText: 'Civil Society, Human Rights & Policy Researchers',
+                coverageType: 'grant',
+                coverage: 'Direct research stipends and institutional support in Europe',
+                deadline: 'Variable Annual Calls',
+                link: 'https://nemtsovfund.org/',
+                destination: 'Germany / Czech Rep'
+            }
+        ];
+
+        const phases = {
+            p1: {
+                title: 'Phase 1: Standardized Testing & Early Priority Applications (Aug – Oct)',
+                items: [
+                    'Schedule & sit IELTS Academic or TOEFL iBT (Target: IELTS 7.5 overall with 7.0 subscores for LSE/Sciences Po; 7.0 for UCD/Maastricht).',
+                    'Draft Statement of Academic Purpose framing formal logic and statistics coursework as preparation for empirical policy research.',
+                    'Directly connect political violence coursework and NGO monitoring field research to prospective institutional capstones (e.g. CEU Policy Lab, Utrecht Conflict proposal).',
+                    'Secure two confidential academic references and one civil society professional recommendation letter.',
+                    'Armenian Candidates: Finalize and submit UK Chevening Scholarship application portal ahead of early October deadline.',
+                    'Open Studielink (Netherlands) account for Maastricht & Utrecht, and submit CEU Round 1 early admission dossiers (Opens Oct 15).'
+                ]
+            },
+            p2: {
+                title: 'Phase 2: Primary Financial Aid & Institutional Deadlines (Nov – Feb)',
+                items: [
+                    'Finalize Studielink application for Maastricht University by Dec 10 to qualify for NL-High Potential & Social Justice scholarships.',
+                    'Submit Hertie School priority and Central & Eastern Europe full tuition scholarship dossier by January 15.',
+                    'Complete admissions dossier for Geneva Graduate Institute (MINT) by January 15.',
+                    'Finalize College of Europe Natolin application and European Neighbourhood Policy (ENP) full scholarship dossier by mid-January.',
+                    'Submit CEU Round 2 applications with institutional financial aid portfolio by February 2.',
+                    'Submit KU Leuven Master Mind scholarship application dossier by February 1 – March 1.',
+                    'Submit Charles University early-bird application (MAIN) by February 28.',
+                    'Submit Sciences Po international dossiers and Émile Boutmy scholarship application by late February.'
+                ]
+            },
+            p3: {
+                title: 'Phase 3: Decision Review, National Grants & Second Round Filings (Mar – May)',
+                items: [
+                    'Finalize Government of Ireland International Education Scholarship (GOI-IES) submission via HEA portal by mid-March.',
+                    'Submit IBEI Barcelona application and request merit-based tuition fee waiver consideration.',
+                    'Submit pre-enrolment applications on Universitaly portal for University of Bologna and prepare ISEE-Parificato income records.',
+                    'Complete institutional admissions interviews and review scholarship decisions.',
+                    'Finalize LSE Graduate Support Scheme applications ahead of the late-April financial aid cutoff.',
+                    'Submit research proposals to the Calouste Gulbenkian Armenian Studies Scholarship by May 15.',
+                    'Confirm primary admissions offer, pay enrollment confirmation deposit, and secure university housing allocations.'
+                ]
+            },
+            p4: {
+                title: 'Phase 4: Consular Mechanics, Document Legalization & Arrival (Jun – Aug)',
+                items: [
+                    'Gather and authenticate official documents: California Secretary of State Apostille (LA applicants) or Russian Ministry of Justice Apostille + Certified Translations (Russian applicants).',
+                    'Complete Czech academic diploma recognition (nostrifikace) and purchase mandatory PVZP health insurance.',
+                    'Submit regional Italian DSU / ER.GO scholarship applications with authenticated ISEE family wealth certificates in July/August.',
+                    'Establish mandatory financial solvency proofs: German blocked account (Sperrkonto €11,904), Dutch university escrow deposit, or EU host guarantee (Annex 32 / Verpflichtungserklärung).',
+                    'Russian Applicants: Complete pre-consular validation via Campus France EEF platform and book biometric appointment via VFS/BLS centers early.',
+                    'LA Applicants: Attend consular appointments at regional West Coast consulates (Wilshire Blvd / Century City VFS).',
+                    'Secure private student health insurance (AON Student Insurance) and book flight arrangements.'
+                ]
+            }
+        };
+
+        // Application State
+        let pinnedItems = [];
+        let comparedProgramIds = [];
+        let completedChecklist = {};
+
+        // Filter and Render Programs
+        function applyProgramFilters() {
+            const search = document.getElementById('filter-search').value.toLowerCase().trim();
+            const country = document.getElementById('filter-country').value;
+            const duration = document.getElementById('filter-duration').value;
+            const maxTuition = parseFloat(document.getElementById('filter-tuition').value);
+            const focus = document.getElementById('filter-focus').value;
+            const sortOrder = document.getElementById('sort-order').value;
+
+            let filtered = programs.filter(p => {
+                const matchSearch = p.name.toLowerCase().includes(search) ||
+                                    p.school.toLowerCase().includes(search) ||
+                                    p.location.toLowerCase().includes(search) ||
+                                    p.focus.toLowerCase().includes(search);
+                const matchCountry = country === 'all' || p.country === country;
+                const matchDuration = duration === 'all' || p.duration.toString() === duration;
+                const matchTuition = p.tuition <= maxTuition;
+                const matchFocus = focus === 'all' || p.focusArea === focus;
+
+                return matchSearch && matchCountry && matchDuration && matchTuition && matchFocus;
+            });
+
+            // Sorting
+            if (sortOrder === 'tuition-asc') {
+                filtered.sort((a, b) => a.tuition - b.tuition);
+            } else if (sortOrder === 'tuition-desc') {
+                filtered.sort((a, b) => b.tuition - a.tuition);
+            } else if (sortOrder === 'duration-asc') {
+                filtered.sort((a, b) => a.duration - b.duration);
+            } else if (sortOrder === 'name') {
+                filtered.sort((a, b) => a.school.localeCompare(b.school));
+            }
+
+            renderPrograms(filtered);
+            document.getElementById('visible-count').textContent = filtered.length;
+            document.getElementById('filtered-total-pill').textContent = `${filtered.length} Available`;
+        }
+
+        function resetProgramFilters() {
+            document.getElementById('filter-search').value = '';
+            document.getElementById('filter-country').value = 'all';
+            document.getElementById('filter-duration').value = 'all';
+            document.getElementById('filter-tuition').value = '999999';
+            document.getElementById('filter-focus').value = 'all';
+            document.getElementById('sort-order').value = 'tuition-asc';
+            applyProgramFilters();
+        }
+
+        function renderPrograms(list) {
+            const grid = document.getElementById('programs-grid');
+            grid.innerHTML = '';
+
+            if (list.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-16 text-center text-slate-500 bg-slate-50 rounded-2xl border border-dashed border-slate-300">
+                        <i class="fa-solid fa-filter-circle-xmark text-3xl text-slate-400 mb-2"></i>
+                        <p class="font-bold text-navy-900">No matching master's programs found</p>
+                        <p class="text-xs text-slate-500 mt-1">Try relaxing your tuition threshold or country selection.</p>
+                        <button onclick="resetProgramFilters()" class="mt-3 px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold">Reset Filters</button>
+                    </div>
+                `;
+                return;
+            }
+
+            list.forEach(p => {
+                const isPinned = pinnedItems.some(item => item.id === p.id);
+                const isCompared = comparedProgramIds.includes(p.id);
+
+                const card = document.createElement('div');
+                card.className = 'bg-slate-50/70 border border-slate-200 rounded-2xl p-5 hover:shadow-lg transition-all duration-200 flex flex-col justify-between relative group hover:border-blue-300';
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-start gap-2">
+                            <span class="px-2.5 py-1 text-[11px] font-bold rounded-lg ${p.duration === 1 ? 'bg-blue-100 text-blue-800' : 'bg-emerald-100 text-emerald-800'}">
+                                ${p.duration}-Year (${p.ects})
+                            </span>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-xs font-mono font-bold text-navy-900 bg-white px-2 py-0.5 rounded-md border border-slate-200">
+                                    ${p.tuitionFormatted}
+                                </span>
+                                <button onclick="togglePin('${p.id}', 'program')" title="${isPinned ? 'Remove bookmark' : 'Bookmark program'}" class="w-7 h-7 rounded-lg flex items-center justify-center border ${isPinned ? 'bg-amber-100 border-amber-300 text-amber-600' : 'bg-white border-slate-200 text-slate-400 hover:text-amber-500'}">
+                                    <i class="fa-solid fa-bookmark text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-navy-900 text-base leading-snug group-hover:text-blue-600 transition">${p.name}</h4>
+                            <p class="text-xs text-slate-500 font-medium mt-0.5 flex items-center gap-1">
+                                <i class="fa-solid fa-building-columns text-[10px] text-slate-400"></i>
+                                <span>${p.school}</span>
+                                <span class="text-slate-300">•</span>
+                                <span class="text-slate-600 font-semibold">${p.location}</span>
+                            </p>
+                        </div>
+
+                        <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">${p.focus}</p>
+
+                        <div class="text-[11px] bg-white p-2.5 rounded-xl border border-slate-200 space-y-1">
+                            <div class="text-slate-600 flex items-center gap-1.5">
+                                <i class="fa-regular fa-clock text-blue-500"></i>
+                                <span class="truncate"><strong>Deadlines:</strong> ${p.deadlines}</span>
+                            </div>
+                            <div class="text-slate-600 flex items-center gap-1.5">
+                                <i class="fa-solid fa-language text-emerald-500"></i>
+                                <span class="truncate"><strong>Language:</strong> ${p.language}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-200/80 flex justify-between items-center text-xs">
+                        <label class="flex items-center gap-1.5 text-slate-600 cursor-pointer select-none">
+                            <input type="checkbox" onchange="toggleCompare('${p.id}')" ${isCompared ? 'checked' : ''} class="rounded text-blue-600 focus:ring-blue-500">
+                            <span class="text-[11px] font-semibold">Compare</span>
+                        </label>
+                        <button onclick="openProgramModal('${p.id}')" class="font-bold text-blue-600 hover:text-blue-800 transition flex items-center gap-1">
+                            Full Dossier →
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Detailed Modal Logic
+        function openProgramModal(id) {
+            const p = programs.find(item => item.id === id);
+            if (!p) return;
+
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex justify-between items-start">
+                        <span class="px-2.5 py-1 text-xs font-bold rounded-lg ${p.duration === 1 ? 'bg-blue-100 text-blue-800' : 'bg-emerald-100 text-emerald-800'}">
+                            ${p.duration}-Year Degree Pathway (${p.ects})
+                        </span>
+                        <span class="font-mono text-xs font-bold bg-slate-100 px-2.5 py-1 rounded text-slate-700">${p.country}</span>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-extrabold text-navy-900 leading-tight">${p.name}</h3>
+                        <p class="text-sm font-semibold text-blue-700">${p.school} — ${p.location}</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2.5 text-xs bg-slate-50 p-3.5 rounded-xl border border-slate-200 font-mono">
+                        <div><strong class="font-sans text-slate-500">Tuition:</strong> ${p.tuitionFormatted}</div>
+                        <div><strong class="font-sans text-slate-500">Language:</strong> ${p.language}</div>
+                        <div class="col-span-2"><strong class="font-sans text-slate-500">Deadlines:</strong> ${p.deadlines}</div>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <h4 class="text-xs font-bold uppercase text-slate-400 tracking-wider">Curricular Architecture</h4>
+                        <p class="text-xs text-slate-700 leading-relaxed">${p.focus}</p>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <h4 class="text-xs font-bold uppercase text-slate-400 tracking-wider">Strategic Candidate Match</h4>
+                        <p class="text-xs text-slate-700 leading-relaxed">${p.highlights}</p>
+                    </div>
+
+                    <div class="p-3 bg-blue-50/70 border border-blue-200 rounded-xl space-y-1">
+                        <h5 class="font-bold text-blue-900 text-xs">Profile Competencies Evaluated:</h5>
+                        <div class="flex flex-wrap gap-1.5">
+                            ${p.strengths.map(s => `<span class="px-2 py-0.5 rounded bg-white text-blue-700 border border-blue-200 text-[10px] font-semibold">${s.toUpperCase()}</span>`).join('')}
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-200 flex justify-between items-center">
+                        <a href="${p.link}" target="_blank" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl shadow transition flex items-center gap-1.5">
+                            <span>Official Admissions Portal</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                        <button onclick="closeModal('program-modal')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl transition">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('program-modal').classList.remove('hidden');
+        }
+
+        // Side-by-Side Comparison
+        function toggleCompare(id) {
+            if (comparedProgramIds.includes(id)) {
+                comparedProgramIds = comparedProgramIds.filter(item => item !== id);
+            } else {
+                if (comparedProgramIds.length >= 3) {
+                    showToast('You can compare a maximum of 3 programs simultaneously.');
+                    applyProgramFilters();
+                    return;
+                }
+                comparedProgramIds.push(id);
+            }
+
+            const btn = document.getElementById('btn-compare');
+            document.getElementById('compare-count').textContent = comparedProgramIds.length;
+            if (comparedProgramIds.length > 0) {
+                btn.classList.remove('hidden');
+            } else {
+                btn.classList.add('hidden');
+            }
+        }
+
+        function openCompareModal() {
+            if (comparedProgramIds.length === 0) return;
+            const list = programs.filter(p => comparedProgramIds.includes(p.id));
+
+            let html = `
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200">
+                            <th class="p-3 text-slate-400 font-semibold uppercase">Feature</th>
+                            ${list.map(p => `<th class="p-3 font-bold text-navy-900 bg-slate-50">${p.name}<br><span class="text-[11px] font-normal text-slate-500">${p.school}</span></th>`).join('')}
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        <tr>
+                            <td class="p-3 font-bold text-slate-700">Country / City</td>
+                            ${list.map(p => `<td class="p-3">${p.location} (${p.country})</td>`).join('')}
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-bold text-slate-700">Duration & Credits</td>
+                            ${list.map(p => `<td class="p-3 font-mono">${p.duration} Year (${p.ects})</td>`).join('')}
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-bold text-slate-700">Non-EU Tuition</td>
+                            ${list.map(p => `<td class="p-3 font-mono font-bold text-blue-700">${p.tuitionFormatted}</td>`).join('')}
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-bold text-slate-700">Deadlines</td>
+                            ${list.map(p => `<td class="p-3">${p.deadlines}</td>`).join('')}
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-bold text-slate-700">Curricular Focus</td>
+                            ${list.map(p => `<td class="p-3 text-slate-600">${p.focus}</td>`).join('')}
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-bold text-slate-700">Direct Link</td>
+                            ${list.map(p => `<td class="p-3"><a href="${p.link}" target="_blank" class="text-blue-600 hover:underline font-bold">Portal ↗</a></td>`).join('')}
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('compare-modal-content').innerHTML = html;
+            document.getElementById('compare-modal').classList.remove('hidden');
+        }
+
+        // Pinning / Bookmarking System
+        function togglePin(id, type) {
+            const index = pinnedItems.findIndex(item => item.id === id);
+            if (index > -1) {
+                pinnedItems.splice(index, 1);
+                showToast('Removed from saved list');
+            } else {
+                pinnedItems.push({ id, type });
+                showToast('Added to saved list');
+            }
+            updatePinnedUI();
+            if (type === 'program') applyProgramFilters();
+            if (type === 'scholarship') applyScholarshipFilters();
+        }
+
+        function updatePinnedUI() {
+            document.getElementById('pinned-count-badge-desktop').textContent = pinnedItems.length;
+            document.getElementById('pinned-count-badge-mobile').textContent = pinnedItems.length;
+
+            const listEl = document.getElementById('pinned-items-list');
+            listEl.innerHTML = '';
+
+            if (pinnedItems.length === 0) {
+                listEl.innerHTML = '<div class="text-center py-10 text-slate-400">No saved items yet. Click the bookmark icon on any program or grant to save it here.</div>';
+                return;
+            }
+
+            pinnedItems.forEach(item => {
+                let obj = item.type === 'program' ? programs.find(p => p.id === item.id) : scholarships.find(s => s.name === item.id);
+                if (!obj) return;
+
+                const div = document.createElement('div');
+                div.className = 'p-3 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-start gap-2';
+                div.innerHTML = `
+                    <div class="space-y-1">
+                        <span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${item.type === 'program' ? 'bg-blue-100 text-blue-800' : 'bg-emerald-100 text-emerald-800'}">
+                            ${item.type.toUpperCase()}
+                        </span>
+                        <div class="font-bold text-navy-900">${obj.name}</div>
+                        <div class="text-[11px] text-slate-500">${item.type === 'program' ? obj.school : obj.provider}</div>
+                    </div>
+                    <button onclick="togglePin('${item.id}', '${item.type}')" class="text-slate-400 hover:text-rose-600 p-1">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                `;
+                listEl.appendChild(div);
+            });
+        }
+
+        function togglePinnedDrawer() {
+            const drawer = document.getElementById('pinned-drawer');
+            drawer.classList.toggle('translate-x-full');
+        }
+
+        function clearAllPinned() {
+            pinnedItems = [];
+            updatePinnedUI();
+            applyProgramFilters();
+            applyScholarshipFilters();
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        // Scholarships Rendering & Filtering
+        function applyScholarshipFilters() {
+            const citizen = document.getElementById('schol-filter-citizen').value;
+            const coverage = document.getElementById('schol-filter-coverage').value;
+            const search = document.getElementById('schol-filter-search').value.toLowerCase().trim();
+
+            const filtered = scholarships.filter(s => {
+                const matchCitizen = citizen === 'all' || s.citizen === 'global' || s.citizen === citizen;
+                const matchCoverage = coverage === 'all' || s.coverageType === coverage;
+                const matchSearch = s.name.toLowerCase().includes(search) ||
+                                    s.provider.toLowerCase().includes(search) ||
+                                    s.coverage.toLowerCase().includes(search);
+                return matchCitizen && matchCoverage && matchSearch;
+            });
+
+            renderScholarships(filtered);
+        }
+
+        function renderScholarships(list) {
+            const grid = document.getElementById('scholarships-grid');
+            grid.innerHTML = '';
+
+            if (list.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-12 text-center text-slate-500 text-sm">No funding schemes match your filter criteria.</div>`;
+                return;
+            }
+
+            list.forEach(s => {
+                const isPinned = pinnedItems.some(item => item.id === s.name);
+                const card = document.createElement('div');
+                card.className = 'bg-slate-50/70 border border-slate-200 rounded-2xl p-5 hover:shadow-md transition flex flex-col justify-between hover:border-emerald-300';
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-start gap-2">
+                            <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md ${s.coverageType === 'full' ? 'bg-emerald-100 text-emerald-800' : (s.coverageType === 'partial' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800')}">
+                                ${s.coverageType === 'full' ? 'Full Funding' : (s.coverageType === 'partial' ? 'Tuition Remission' : 'Fixed Grant')}
+                            </span>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-[11px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 font-mono">
+                                    ${s.deadline}
+                                </span>
+                                <button onclick="togglePin('${s.name}', 'scholarship')" title="Bookmark" class="w-6 h-6 rounded flex items-center justify-center border ${isPinned ? 'bg-amber-100 border-amber-300 text-amber-600' : 'bg-white border-slate-200 text-slate-400 hover:text-amber-500'}">
+                                    <i class="fa-solid fa-bookmark text-[10px]"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-navy-900 text-sm leading-snug">${s.name}</h4>
+                            <p class="text-xs text-slate-500 font-medium">${s.provider} • <span class="text-slate-600 font-semibold">${s.destination}</span></p>
+                        </div>
+
+                        <div class="text-xs bg-white p-3 rounded-xl border border-slate-200 space-y-1.5">
+                            <div class="text-slate-700"><strong>Target:</strong> ${s.citizenText}</div>
+                            <div class="text-slate-600"><strong>Scope:</strong> ${s.coverage}</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-200/80">
+                        <a href="${s.link}" target="_blank" class="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center justify-end gap-1">
+                            <span>Scholarship Details & Portal</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Profile Matcher Engine
+        function updateProfileScores() {
+            const logic = document.getElementById('chk-logic').checked;
+            const stats = document.getElementById('chk-stats').checked;
+            const conflict = document.getElementById('chk-conflict').checked;
+            const ngo = document.getElementById('chk-ngo').checked;
+            const french = document.getElementById('chk-french').checked;
+            const english = document.getElementById('chk-english').checked;
+
+            const selectedTraits = [];
+            if (logic) selectedTraits.push('logic');
+            if (stats) selectedTraits.push('stats');
+            if (conflict) selectedTraits.push('conflict');
+            if (ngo) selectedTraits.push('ngo');
+            if (french) selectedTraits.push('french');
+            if (english) selectedTraits.push('english');
+
+            const scoredPrograms = programs.map(p => {
+                let matchPoints = 0;
+                p.strengths.forEach(s => {
+                    if (selectedTraits.includes(s)) matchPoints += 1;
+                });
+                const percentage = Math.round((matchPoints / p.strengths.length) * 100);
+                return { ...p, matchPercentage: percentage };
+            });
+
+            scoredPrograms.sort((a, b) => b.matchPercentage - a.matchPercentage);
+
+            const container = document.getElementById('matcher-results');
+            container.innerHTML = '';
+
+            scoredPrograms.slice(0, 8).forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-4';
+                card.innerHTML = `
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-navy-900 text-sm">${p.name}</span>
+                            <span class="text-slate-400">•</span>
+                            <span class="text-xs text-slate-500">${p.school}</span>
+                        </div>
+                        <p class="text-xs text-slate-600">${p.highlights}</p>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <div class="text-lg font-mono font-extrabold ${p.matchPercentage >= 75 ? 'text-emerald-600' : 'text-blue-600'}">
+                            ${p.matchPercentage}%
+                        </div>
+                        <div class="text-[10px] uppercase font-bold text-slate-400">Match Fit</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Roadmap Phases & Interactive Checklist
+        function switchPhase(phaseKey) {
+            document.querySelectorAll('.phase-btn').forEach(btn => {
+                btn.classList.remove('border-blue-600', 'text-blue-600');
+                btn.classList.add('border-transparent', 'text-slate-500');
+            });
+            document.getElementById(`p-tab-${phaseKey}`).classList.remove('border-transparent', 'text-slate-500');
+            document.getElementById(`p-tab-${phaseKey}`).classList.add('border-blue-600', 'text-blue-600');
+
+            const p = phases[phaseKey];
+            const container = document.getElementById('phase-container');
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                    <h4 class="font-bold text-navy-900 text-base flex items-center gap-2">
+                        <i class="fa-regular fa-calendar-check text-blue-600"></i>
+                        <span>${p.title}</span>
+                    </h4>
+                    <div class="space-y-3">
+                        ${p.items.map((item, idx) => {
+                            const itemId = `${phaseKey}-${idx}`;
+                            const isChecked = completedChecklist[itemId] || false;
+                            return `
+                                <label class="flex items-start gap-3 p-3 bg-white rounded-xl border border-slate-200 hover:border-blue-300 transition cursor-pointer">
+                                    <input type="checkbox" onchange="toggleChecklistItem('${itemId}')" ${isChecked ? 'checked' : ''} class="mt-0.5 rounded text-blue-600 focus:ring-blue-500">
+                                    <span class="text-xs text-slate-700 leading-relaxed ${isChecked ? 'line-through text-slate-400' : ''}">${item}</span>
+                                </label>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function toggleChecklistItem(itemId) {
+            completedChecklist[itemId] = !completedChecklist[itemId];
+            updateRoadmapProgress();
+            const currentPhase = Object.keys(phases).find(pk => document.getElementById(`p-tab-${pk}`).classList.contains('border-blue-600'));
+            if (currentPhase) switchPhase(currentPhase);
+        }
+
+        function updateRoadmapProgress() {
+            let total = 0;
+            Object.values(phases).forEach(p => total += p.items.length);
+            const checked = Object.values(completedChecklist).filter(Boolean).length;
+            const pct = Math.round((checked / total) * 100);
+
+            document.getElementById('roadmap-progress-text').textContent = `${pct}%`;
+            document.getElementById('roadmap-progress-bar').style.width = `${pct}%`;
+        }
+
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(sec => sec.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+
+            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.remove('text-slate-300');
+                activeNav.classList.add('bg-blue-600', 'text-white');
+            }
+
+            if (tabId === 'analytics') {
+                renderCharts();
+            }
+            if (tabId === 'matcher') {
+                updateProfileScores();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Toast Feedback Message
+        function showToast(msg) {
+            const existing = document.getElementById('toast-msg');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'toast-msg';
+            toast.className = 'fixed bottom-5 right-5 z-50 bg-navy-900 text-white text-xs px-4 py-2.5 rounded-xl shadow-2xl border border-slate-700 flex items-center gap-2 animate-bounce';
+            toast.innerHTML = `<i class="fa-solid fa-circle-info text-blue-400"></i> <span>${msg}</span>`;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                if (toast) toast.remove();
+            }, 2600);
+        }
+
+        // Chart.js Instances
+        let tuitionChartInstance = null;
+        let visaChartInstance = null;
+
+        function renderCharts() {
+            if (tuitionChartInstance && visaChartInstance) return;
+
+            // Chart 1: Tuition Comparison
+            const ctxTuition = document.getElementById('tuitionChart').getContext('2d');
+            tuitionChartInstance = new Chart(ctxTuition, {
+                type: 'bar',
+                data: {
+                    labels: ['Unibo (Italy)', 'KU Leuven (BE)', 'Charles (CZ)', 'IHEID (CH)', 'CEU Politics', 'CEU Human Rights', 'IBEI (Spain)', 'Hertie MPP', 'Sciences Po', 'Utrecht (NL)', 'UNU-MERIT', 'UCD (Ireland)', 'Natolin (PL)', 'LSE Conflict', 'LSE Human Rights'],
+                    datasets: [{
+                        label: 'Annual Non-EU Tuition (€)',
+                        data: [2000, 4200, 7000, 8300, 12000, 13000, 12900, 18750, 20640, 21342, 21500, 22600, 27000, 35500, 40600],
+                        backgroundColor: '#3b82f6',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) { return 'Tuition: €' + context.raw.toLocaleString(); }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(val) { return '€' + (val / 1000) + 'k'; },
+                                font: { size: 10, family: 'Plus Jakarta Sans' }
+                            },
+                            grid: { color: '#f1f5f9' }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45,
+                                font: { size: 9, family: 'Plus Jakarta Sans' }
+                            },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: Visa Stayback vs Term Work
+            const ctxVisa = document.getElementById('visaChart').getContext('2d');
+            visaChartInstance = new Chart(ctxVisa, {
+                type: 'bar',
+                data: {
+                    labels: ['Ireland (Stamp 1G)', 'UK (Graduate)', 'Germany (§20)', 'Spain (Búsqueda)', 'Belgium (Zoekjaar)', 'Netherlands (Zoekjaar)', 'France (RECE)', 'Austria (RWR)', 'Italy (Ricerca)', 'Czech Rep. (Free Market)'],
+                    datasets: [
+                        {
+                            label: 'Post-Study Search Permit (Months)',
+                            data: [24, 24, 18, 12, 12, 12, 12, 12, 12, 9],
+                            backgroundColor: '#10b981',
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'Weekly Student Work Limit (Hours)',
+                            data: [20, 20, 20, 30, 20, 16, 20, 20, 20, 40],
+                            backgroundColor: '#f59e0b',
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { font: { size: 10, family: 'Plus Jakarta Sans' } }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { font: { size: 10, family: 'Plus Jakarta Sans' } },
+                            grid: { color: '#f1f5f9' }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45,
+                                font: { size: 9, family: 'Plus Jakarta Sans' }
+                            },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize App on DOM Ready
+        document.addEventListener('DOMContentLoaded', () => {
+            applyProgramFilters();
+            applyScholarshipFilters();
+            switchPhase('p1');
+            updateRoadmapProgress();
+        });
+    </script>
+</body>
+</html>
